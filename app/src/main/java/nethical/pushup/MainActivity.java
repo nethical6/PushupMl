@@ -4,6 +4,7 @@ import android.graphics.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
+import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,18 +36,16 @@ public class MainActivity extends AppCompatActivity {
     private PreviewView previewView;
     private GraphicOverlay graphicOverlay;
     private TextView textView;
+    
     private ExecutorService cameraExecutor;
-    private PoseDetector poseDetector;
-   private ProcessCameraProvider cameraProvider;
-   private Camera camera;
-   private Preview previewUseCase;
-   private ImageAnalysis analysisUseCase;
+    private ExecutorService executor;
+  
    private PoseDetectorProcessor imageProcessor;
     
     private boolean needUpdateGraphicOverlayImageSourceInfo = true;
-
-  private int lensFacing = CameraSelector.LENS_FACING_BACK;
-  private CameraSelector cameraSelector;
+    
+    private int lensFacing;
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,21 +54,28 @@ public class MainActivity extends AppCompatActivity {
         previewView = findViewById(R.id.previewView);
         graphicOverlay = findViewById(R.id.overlayView);
         textView = findViewById(R.id.textView);
+        Button start = findViewById(R.id.start);
+        
+        cameraExecutor = Executors.newSingleThreadExecutor();
+        executor = Executors.newSingleThreadExecutor();
 
         
-        AccuratePoseDetectorOptions options =
-                new AccuratePoseDetectorOptions.Builder()
-                        .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
+       PoseDetectorOptions options =
+                new PoseDetectorOptions.Builder()
+                        .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
+        .setExecutor(executor)
                         .build();
                
-        poseDetector = PoseDetection.getClient(options);
+      //  poseDetector = PoseDetection.getClient(options);
 
-        cameraExecutor = Executors.newSingleThreadExecutor();
-
+        
         imageProcessor = new PoseDetectorProcessor(
-            this,options,false,false,false,false,true
+            this,options,false,false,false,true,true
         );
+        
         startCamera();
+        
+        
     }
     
 
@@ -89,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
-
-                imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
+                    
+                   imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
                     @Override
                     public void analyze(@NonNull ImageProxy imageProxy) {
                                 
@@ -108,16 +115,17 @@ public class MainActivity extends AppCompatActivity {
                                     
                         }
                         try {
-                            imageProcessor.processImageProxy(imageProxy, graphicOverlay);
+                          imageProcessor.processImageProxy(imageProxy, graphicOverlay);
+                          //processImageProxy(imageProxy);
                         } catch (Exception e) {
                             Log.e("ml-error", "Failed to process image. Error: " + e.getLocalizedMessage());
                             Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT)
                                 .show();
                         }
-                        processImageProxy(imageProxy);
+                        
                     }
                 });
-
+                
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
 
             } catch (ExecutionException | InterruptedException e) {
@@ -127,19 +135,6 @@ public class MainActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
-    private void processImageProxy(ImageProxy imageProxy) {
-        @SuppressWarnings("UnsafeOptInUsageError")
-        InputImage image = InputImage.fromMediaImage(imageProxy.getImage(), imageProxy.getImageInfo().getRotationDegrees());
-        poseDetector.process(image)
-                .addOnSuccessListener(pose -> {
-                    
-                })
-                .addOnFailureListener(e -> Log.e("PoseDetection", "Pose detection failed", e))
-                .addOnCompleteListener(task -> imageProxy.close());
-                
-                
-
-    }
 
     @Override
     protected void onDestroy() {
