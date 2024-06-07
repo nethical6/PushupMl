@@ -18,6 +18,7 @@ package com.google.mlkit.vision.demo.java.posedetector;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.android.odml.image.MlImage;
@@ -47,10 +48,12 @@ public class PoseDetectorProcessor
     private final boolean runClassification;
     private final boolean isStreamMode;
     private final Context context;
+    
     private final Executor classificationExecutor;
-
+    private final Executor resultExecutor;
+    
     private PoseClassifierProcessor poseClassifierProcessor;
-
+    
     /** Internal class to hold Pose and classification results. */
     protected static class PoseWithClassification {
         private final Pose pose;
@@ -77,7 +80,10 @@ public class PoseDetectorProcessor
             boolean visualizeZ,
             boolean rescaleZForVisualization,
             boolean runClassification,
-            boolean isStreamMode) {
+            boolean isStreamMode,
+            PoseClassifierProcessor poseClassifierProcessor
+        
+        ) {
         super(context);
         this.showInFrameLikelihood = showInFrameLikelihood;
         this.visualizeZ = visualizeZ;
@@ -86,7 +92,9 @@ public class PoseDetectorProcessor
         this.runClassification = runClassification;
         this.isStreamMode = isStreamMode;
         this.context = context;
+        this.poseClassifierProcessor = poseClassifierProcessor;
         classificationExecutor = Executors.newSingleThreadExecutor();
+        resultExecutor = Executors.newSingleThreadExecutor();
     }
 
     @Override
@@ -94,6 +102,7 @@ public class PoseDetectorProcessor
         super.stop();
         detector.close();
     }
+    
 
     @Override
     protected Task<PoseWithClassification> detectInImage(InputImage image) {
@@ -111,6 +120,7 @@ public class PoseDetectorProcessor
                                 classificationResult = poseClassifierProcessor.getPoseResult(pose);
                             }
                             return new PoseWithClassification(pose, classificationResult);
+                       
                         });
     }
 

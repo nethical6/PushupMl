@@ -1,7 +1,9 @@
 package nethical.pushup;
 
+import android.content.Context;
 import android.graphics.Camera;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.demo.GraphicOverlay;
 import com.google.mlkit.vision.demo.java.posedetector.PoseDetectorProcessor;
+import com.google.mlkit.vision.demo.java.posedetector.classification.PoseClassifierProcessor;
 import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
@@ -30,6 +33,7 @@ import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,29 +58,77 @@ public class MainActivity extends AppCompatActivity {
         previewView = findViewById(R.id.previewView);
         graphicOverlay = findViewById(R.id.overlayView);
         textView = findViewById(R.id.textView);
-        Button start = findViewById(R.id.start);
         
         cameraExecutor = Executors.newSingleThreadExecutor();
         executor = Executors.newSingleThreadExecutor();
 
-        
-       PoseDetectorOptions options =
+        PoseDetectorOptions options =
                 new PoseDetectorOptions.Builder()
                         .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
         .setExecutor(executor)
                         .build();
                
-      //  poseDetector = PoseDetection.getClient(options);
-
+   //     PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(),true);
         
-        imageProcessor = new PoseDetectorProcessor(
-            this,options,false,false,false,true,true
-        );
         
         startCamera();
         
         
+        ExecutorService executor2 = Executors.newSingleThreadExecutor();
+        Future<PoseClassifierProcessor> future = executor2.submit(() -> {
+            return new PoseClassifierProcessor(getApplication(), true);
+        });
+        
+        // Define a callback function to be executed when the task completes
+        Runnable onCompletion = () -> {
+            try {
+        // Retrieve the PoseClassifierProcessor object from the Future
+                PoseClassifierProcessor pcf = future.get();
+                // Call the onCompletion callback function with the pcf object
+                imageProcessor = new PoseDetectorProcessor(
+                            this,options,false,false,false,true,true,pcf
+                            );
+            } catch (InterruptedException | ExecutionException e) {
+                // Handle any exceptions that occurred during the task execution
+                e.printStackTrace();
+            }
+            
+        };
+        
+        try {
+            PoseClassifierProcessor pcf = future.get(); // This call will block until the result is available
+            // Call the onCompletion callback function
+            onCompletion.run();
+            // Further processing or usage of pcf...
+        } catch (InterruptedException | ExecutionException e) {
+            // Handle any exceptions that occurred during the task execution
+            e.printStackTrace();
+        } finally {
+            executor2.shutdown(); // Don't forget to shut down the executor
+        }
+
+        
+
+        
+
+       
+      //  poseDetector = PoseDetection.getClient(options);
+
+        
+        
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        
+        
+        // TODO: Implement this method
+    }
+    
+    
+    
+    
+    
     
 
     private void startCamera() {
@@ -90,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                         .build();
 
                 ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
@@ -112,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                                 imageProxy.getHeight(), imageProxy.getWidth(), isImageFlipped);
                             }
                             needUpdateGraphicOverlayImageSourceInfo = false;
-                                    
+                            
                         }
                         try {
                           imageProcessor.processImageProxy(imageProxy, graphicOverlay);

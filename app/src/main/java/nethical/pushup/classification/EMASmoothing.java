@@ -29,7 +29,7 @@ public class EMASmoothing {
   private static final int DEFAULT_WINDOW_SIZE = 10;
   private static final float DEFAULT_ALPHA = 0.2f;
 
-  private static final long RESET_THRESHOLD_MS = 100;
+  private static final long RESET_THRESHOLD_MS = 500;
 
   private final int windowSize;
   private final float alpha;
