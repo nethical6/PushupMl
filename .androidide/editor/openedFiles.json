@@ -79,14 +79,14 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifierProcessor.java",
       "selection": {
         "end": {
-          "column": 4,
-          "index": 1764,
-          "line": 46
+          "column": 69,
+          "index": 1393,
+          "line": 38
         },
         "start": {
-          "column": 4,
-          "index": 1764,
-          "line": 46
+          "column": 69,
+          "index": 1393,
+          "line": 38
         }
       }
     },
@@ -106,5 +106,5 @@
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/MainActivity.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifierProcessor.java"
 }
