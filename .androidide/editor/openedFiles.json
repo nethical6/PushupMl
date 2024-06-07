@@ -1,17 +1,32 @@
 {
   "allFiles": [
     {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/PoseGraphic.java",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 3151,
+          "line": 90
+        },
+        "start": {
+          "column": 0,
+          "index": 3151,
+          "line": 90
+        }
+      }
+    },
+    {
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/PoseDetectorProcessor.java",
       "selection": {
         "end": {
-          "column": 33,
-          "index": 3121,
-          "line": 82
+          "column": 34,
+          "index": 1675,
+          "line": 39
         },
         "start": {
-          "column": 33,
-          "index": 3121,
-          "line": 82
+          "column": 13,
+          "index": 1654,
+          "line": 39
         }
       }
     },
@@ -19,19 +34,34 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/MainActivity.java",
       "selection": {
         "end": {
-          "column": 74,
-          "index": 5081,
-          "line": 144
+          "column": 30,
+          "index": 4954,
+          "line": 125
         },
         "start": {
-          "column": 74,
-          "index": 5081,
-          "line": 144
+          "column": 30,
+          "index": 4954,
+          "line": 125
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifierProcessor.java",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/VisionProcessorBase.java",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 4500,
+          "line": 117
+        },
+        "start": {
+          "column": 0,
+          "index": 4500,
+          "line": 117
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/AndroidManifest.xml",
       "selection": {
         "end": {
           "column": 0,
@@ -42,6 +72,21 @@
           "column": 0,
           "index": 0,
           "line": 0
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifierProcessor.java",
+      "selection": {
+        "end": {
+          "column": 4,
+          "index": 1764,
+          "line": 46
+        },
+        "start": {
+          "column": 4,
+          "index": 1764,
+          "line": 46
         }
       }
     },
@@ -50,43 +95,13 @@
       "selection": {
         "end": {
           "column": 0,
-          "index": 0,
-          "line": 0
+          "index": 2982,
+          "line": 72
         },
         "start": {
           "column": 0,
-          "index": 0,
-          "line": 0
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/PoseGraphic.java",
-      "selection": {
-        "end": {
-          "column": 5,
-          "index": 3597,
-          "line": 100
-        },
-        "start": {
-          "column": 5,
-          "index": 3597,
-          "line": 100
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/res/layout/activity_main.xml",
-      "selection": {
-        "end": {
-          "column": 5,
-          "index": 1343,
-          "line": 37
-        },
-        "start": {
-          "column": 5,
-          "index": 1343,
-          "line": 37
+          "index": 2982,
+          "line": 72
         }
       }
     }

@@ -44,7 +44,7 @@ public class PoseClassifierProcessor {
   private static final String PUSHUPS_CLASS = "pushups_down";
   private static final String SQUATS_CLASS = "squats_down";
   private static final String[] POSE_CLASSES = {
-    PUSHUPS_CLASS, SQUATS_CLASS
+    SQUATS_CLASS
   };
 
   private final boolean isStreamMode;

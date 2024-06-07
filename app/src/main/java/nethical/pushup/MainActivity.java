@@ -65,15 +65,15 @@ public class MainActivity extends AppCompatActivity {
         PoseDetectorOptions options =
                 new PoseDetectorOptions.Builder()
                         .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
-        .setExecutor(executor)
                         .build();
                
    //     PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(),true);
         
-        
         startCamera();
         
         
+        
+        /*
         ExecutorService executor2 = Executors.newSingleThreadExecutor();
         Future<PoseClassifierProcessor> future = executor2.submit(() -> {
             return new PoseClassifierProcessor(getApplication(), true);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable onCompletion = () -> {
             try {
         // Retrieve the PoseClassifierProcessor object from the Future
-                PoseClassifierProcessor pcf = future.get();
+                final PoseClassifierProcessor pcf = future.get();
                 // Call the onCompletion callback function with the pcf object
                 imageProcessor = new PoseDetectorProcessor(
                             this,options,false,false,false,true,true,pcf
@@ -95,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
             
         };
         
+        
         try {
-            PoseClassifierProcessor pcf = future.get(); // This call will block until the result is available
+           PoseClassifierProcessor pcf = future.get(); // This call will block until the result is available
             // Call the onCompletion callback function
             onCompletion.run();
             // Further processing or usage of pcf...
@@ -105,10 +106,35 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         } finally {
             executor2.shutdown(); // Don't forget to shut down the executor
-        }
-
+        }*/
         
+        ExecutorService executor2 = Executors.newSingleThreadExecutor();
 
+        // Submit the task to the executor
+        Future<PoseClassifierProcessor> future = executor2.submit(() -> {
+            return new PoseClassifierProcessor(getApplication(), true);
+        });
+
+        // Define a callback function to be executed when the task completes
+        Runnable onCompletion = () -> {
+            try {
+                // Retrieve the PoseClassifierProcessor object from the Future
+                final PoseClassifierProcessor pcf = future.get();
+                imageProcessor = new PoseDetectorProcessor(
+                    this, options, false, false, false, true, true, pcf
+                );
+                startCamera();
+            } catch (InterruptedException | ExecutionException e) {
+                // Handle any exceptions that occurred during the task execution
+                e.printStackTrace();
+            } finally {
+                executor2.shutdown(); // Shut down the executor
+            }
+        };
+
+        // Execute onCompletion in a separate thread to avoid blocking the main thread
+        executor2.submit(onCompletion);
+        
         
 
        
@@ -142,9 +168,16 @@ public class MainActivity extends AppCompatActivity {
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
                 CameraSelector cameraSelector = new CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                         .build();
 
+                 if(imageProcessor==null){
+                        cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+                        
+                              return;
+                          }
+                    cameraProvider.unbindAll();
+                                
                 ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
@@ -152,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                    imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
                     @Override
                     public void analyze(@NonNull ImageProxy imageProxy) {
-                                
+                          
                         if (needUpdateGraphicOverlayImageSourceInfo) {
                             boolean isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT;
                             int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();

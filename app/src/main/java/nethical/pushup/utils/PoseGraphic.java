@@ -89,7 +89,6 @@ public class PoseGraphic extends Graphic {
       return;
     }
 
-        
     // Draw pose classification text.
     float classificationX = POSE_CLASSIFICATION_TEXT_SIZE * 0.5f;
     for (int i = 0; i < poseClassification.size(); i++) {

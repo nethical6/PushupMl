@@ -20,6 +20,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
@@ -114,8 +115,8 @@ public class PoseDetectorProcessor
                             List<String> classificationResult = new ArrayList<>();
                             if (runClassification) {
                                 if (poseClassifierProcessor == null) {
-                                    poseClassifierProcessor =
-                                            new PoseClassifierProcessor(context, isStreamMode);
+                                  //  poseClassifierProcessor =
+                                          //  new PoseClassifierProcessor(context, isStreamMode);
                                 }
                                 classificationResult = poseClassifierProcessor.getPoseResult(pose);
                             }
@@ -134,8 +135,8 @@ public class PoseDetectorProcessor
                             List<String> classificationResult = new ArrayList<>();
                             if (runClassification) {
                                 if (poseClassifierProcessor == null) {
-                                    poseClassifierProcessor =
-                                            new PoseClassifierProcessor(context, isStreamMode);
+                                   // poseClassifierProcessor =
+                                          //  new PoseClassifierProcessor(context, isStreamMode);
                                 }
                                 classificationResult = poseClassifierProcessor.getPoseResult(pose);
                             }
@@ -147,6 +148,7 @@ public class PoseDetectorProcessor
     protected void onSuccess(
             @NonNull PoseWithClassification poseWithClassification,
             @NonNull GraphicOverlay graphicOverlay) {
+        graphicOverlay.clear();
         graphicOverlay.add(
                 new PoseGraphic(
                         graphicOverlay,
@@ -159,4 +161,6 @@ public class PoseDetectorProcessor
 
     @Override
     protected void onFailure(Exception e) {}
+    
+    
 }
