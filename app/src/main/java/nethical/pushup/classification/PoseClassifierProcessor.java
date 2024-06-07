@@ -30,20 +30,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import nethical.pushup.ExerciseConstants;
 
 /**
  * Accepts a stream of {@link Pose} for classification and Rep counting.
  */
 public class PoseClassifierProcessor {
   private static final String TAG = "PoseClassifierProcessor";
-  private static final String POSE_SAMPLES_FILE = "pose/fitness_pose_samples.csv";
+  private static final String POSE_SAMPLES_FILE = "pose/squat_samples.csv";
 
   // Specify classes for which we want rep counting.
   // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
   // for your pose samples.
   private static final String PUSHUPS_CLASS = "pushups_down";
   private static final String SQUATS_CLASS = "squats_down";
-  private static final String[] POSE_CLASSES = {
+  private static String[] POSE_CLASSES = {
     SQUATS_CLASS
   };
 
@@ -55,6 +56,20 @@ public class PoseClassifierProcessor {
   private String lastRepResult;
 
   @WorkerThread
+  public PoseClassifierProcessor(Context context, boolean isStreamMode,String[] poseClasses) {
+    Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
+    this.isStreamMode = isStreamMode;
+    if (isStreamMode) {
+      emaSmoothing = new EMASmoothing();
+      repCounters = new ArrayList<>();
+      lastRepResult = "";
+       POSE_CLASSES = poseClasses;     
+    }
+       
+        
+    loadPoseSamples(context);
+  }
+    @WorkerThread
   public PoseClassifierProcessor(Context context, boolean isStreamMode) {
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     this.isStreamMode = isStreamMode;
@@ -63,8 +78,11 @@ public class PoseClassifierProcessor {
       repCounters = new ArrayList<>();
       lastRepResult = "";
     }
+       
+        
     loadPoseSamples(context);
   }
+    
 
   private void loadPoseSamples(Context context) {
     List<PoseSample> poseSamples = new ArrayList<>();

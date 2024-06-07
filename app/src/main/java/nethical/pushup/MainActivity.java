@@ -30,6 +30,7 @@ import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,17 +40,17 @@ public class MainActivity extends AppCompatActivity {
 
     private PreviewView previewView;
     private GraphicOverlay graphicOverlay;
-    private TextView textView;
     
+
     private ExecutorService cameraExecutor;
     private ExecutorService executor;
-  
-   private PoseDetectorProcessor imageProcessor;
-    
+
+    private PoseDetectorProcessor imageProcessor;
+
     private boolean needUpdateGraphicOverlayImageSourceInfo = true;
-    
+
     private int lensFacing;
-  
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         graphicOverlay = findViewById(R.id.overlayView);
-        textView = findViewById(R.id.textView);
         
         cameraExecutor = Executors.newSingleThreadExecutor();
         executor = Executors.newSingleThreadExecutor();
@@ -66,164 +66,132 @@ public class MainActivity extends AppCompatActivity {
                 new PoseDetectorOptions.Builder()
                         .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
                         .build();
-               
-   //     PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(),true);
-        
+
+        //     PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(),true);
+
         startCamera();
-        
-        
-        
-        /*
-        ExecutorService executor2 = Executors.newSingleThreadExecutor();
-        Future<PoseClassifierProcessor> future = executor2.submit(() -> {
-            return new PoseClassifierProcessor(getApplication(), true);
-        });
-        
-        // Define a callback function to be executed when the task completes
-        Runnable onCompletion = () -> {
-            try {
-        // Retrieve the PoseClassifierProcessor object from the Future
-                final PoseClassifierProcessor pcf = future.get();
-                // Call the onCompletion callback function with the pcf object
-                imageProcessor = new PoseDetectorProcessor(
-                            this,options,false,false,false,true,true,pcf
-                            );
-            } catch (InterruptedException | ExecutionException e) {
-                // Handle any exceptions that occurred during the task execution
-                e.printStackTrace();
-            }
-            
-        };
-        
-        
-        try {
-           PoseClassifierProcessor pcf = future.get(); // This call will block until the result is available
-            // Call the onCompletion callback function
-            onCompletion.run();
-            // Further processing or usage of pcf...
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle any exceptions that occurred during the task execution
-            e.printStackTrace();
-        } finally {
-            executor2.shutdown(); // Don't forget to shut down the executor
-        }*/
-        
+
         ExecutorService executor2 = Executors.newSingleThreadExecutor();
 
         // Submit the task to the executor
-        Future<PoseClassifierProcessor> future = executor2.submit(() -> {
-            return new PoseClassifierProcessor(getApplication(), true);
-        });
+        Future<PoseClassifierProcessor> future =
+                executor2.submit(
+                        () -> {
+                            return new PoseClassifierProcessor(getApplication(), true);
+                        });
 
         // Define a callback function to be executed when the task completes
-        Runnable onCompletion = () -> {
-            try {
-                // Retrieve the PoseClassifierProcessor object from the Future
-                final PoseClassifierProcessor pcf = future.get();
-                imageProcessor = new PoseDetectorProcessor(
-                    this, options, false, false, false, true, true, pcf
-                );
-                startCamera();
-            } catch (InterruptedException | ExecutionException e) {
-                // Handle any exceptions that occurred during the task execution
-                e.printStackTrace();
-            } finally {
-                executor2.shutdown(); // Shut down the executor
-            }
-        };
+        Runnable onCompletion =
+                () -> {
+                    try {
+                        // Retrieve the PoseClassifierProcessor object from the Future
+                        final PoseClassifierProcessor pcf = future.get();
+                        imageProcessor =
+                                new PoseDetectorProcessor(
+                                        this, options, false, false, false, true, true, pcf);
+                        startCamera();
+                    } catch (InterruptedException | ExecutionException e) {
+                        // Handle any exceptions that occurred during the task execution
+                        e.printStackTrace();
+                    } finally {
+                        executor2.shutdown(); // Shut down the executor
+                    }
+                };
 
         // Execute onCompletion in a separate thread to avoid blocking the main thread
         executor2.submit(onCompletion);
-        
-        
-
-       
-      //  poseDetector = PoseDetection.getClient(options);
-
-        
-        
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        
-        
-        // TODO: Implement this method
-    }
-    
-    
-    
-    
-    
-    
 
     private void startCamera() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
+                ProcessCameraProvider.getInstance(this);
 
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+        cameraProviderFuture.addListener(
+                () -> {
+                    try {
+                        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
-                Preview preview = new Preview.Builder().build();
-                preview.setSurfaceProvider(previewView.getSurfaceProvider());
+                        Preview preview = new Preview.Builder().build();
+                        preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-                CameraSelector cameraSelector = new CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                        .build();
+                        CameraSelector cameraSelector =
+                                new CameraSelector.Builder()
+                                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                                        .build();
 
-                 if(imageProcessor==null){
-                        cameraProvider.bindToLifecycle(this, cameraSelector, preview);
-                        
-                              return;
-                          }
-                    cameraProvider.unbindAll();
-                                
-                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build();
-                    
-                   imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
-                    @Override
-                    public void analyze(@NonNull ImageProxy imageProxy) {
-                          
-                        if (needUpdateGraphicOverlayImageSourceInfo) {
-                            boolean isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT;
-                            int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();
-                            if (rotationDegrees == 0 || rotationDegrees == 180) {
-                            graphicOverlay.setImageSourceInfo(
-                                imageProxy.getWidth(), imageProxy.getHeight(), isImageFlipped);
-                            } else {
-                            graphicOverlay.setImageSourceInfo(
-                                imageProxy.getHeight(), imageProxy.getWidth(), isImageFlipped);
-                            }
-                            needUpdateGraphicOverlayImageSourceInfo = false;
-                            
+                        if (imageProcessor == null) {
+                            cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+
+                            return;
                         }
-                        try {
-                          imageProcessor.processImageProxy(imageProxy, graphicOverlay);
-                          //processImageProxy(imageProxy);
-                        } catch (Exception e) {
-                            Log.e("ml-error", "Failed to process image. Error: " + e.getLocalizedMessage());
-                            Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_SHORT)
-                                .show();
-                        }
-                        
+                        cameraProvider.unbindAll();
+
+                        ImageAnalysis imageAnalysis =
+                                new ImageAnalysis.Builder()
+                                        .setBackpressureStrategy(
+                                                ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                                        .build();
+
+                        imageAnalysis.setAnalyzer(
+                                cameraExecutor,
+                                new ImageAnalysis.Analyzer() {
+                                    @Override
+                                    public void analyze(@NonNull ImageProxy imageProxy) {
+
+                                        if (needUpdateGraphicOverlayImageSourceInfo) {
+                                            boolean isImageFlipped =
+                                                    lensFacing == CameraSelector.LENS_FACING_FRONT;
+                                            int rotationDegrees =
+                                                    imageProxy.getImageInfo().getRotationDegrees();
+                                            if (rotationDegrees == 0 || rotationDegrees == 180) {
+                                                graphicOverlay.setImageSourceInfo(
+                                                        imageProxy.getWidth(),
+                                                        imageProxy.getHeight(),
+                                                        isImageFlipped);
+                                            } else {
+                                                graphicOverlay.setImageSourceInfo(
+                                                        imageProxy.getHeight(),
+                                                        imageProxy.getWidth(),
+                                                        isImageFlipped);
+                                            }
+                                            needUpdateGraphicOverlayImageSourceInfo = false;
+                                        }
+                                        try {
+                                            imageProcessor.processImageProxy(
+                                                    imageProxy, graphicOverlay);
+                                            // processImageProxy(imageProxy);
+                                        } catch (Exception e) {
+                                            Log.e(
+                                                    "ml-error",
+                                                    "Failed to process image. Error: "
+                                                            + e.getLocalizedMessage());
+                                            Toast.makeText(
+                                                            getApplicationContext(),
+                                                            e.getLocalizedMessage(),
+                                                            Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    }
+                                });
+
+                        cameraProvider.bindToLifecycle(
+                                this, cameraSelector, preview, imageAnalysis);
+
+                    } catch (ExecutionException | InterruptedException e) {
+                        // No errors need to be handled for this Future.
+                        // This should never be reached.
                     }
-                });
-                
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
-
-            } catch (ExecutionException | InterruptedException e) {
-                // No errors need to be handled for this Future.
-                // This should never be reached.
-            }
-        }, ContextCompat.getMainExecutor(this));
+                },
+                ContextCompat.getMainExecutor(this));
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         cameraExecutor.shutdown();
+
+        executor.shutdown();
     }
+
+    
 }

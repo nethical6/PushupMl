@@ -119,6 +119,7 @@ public class PoseDetectorProcessor
                                           //  new PoseClassifierProcessor(context, isStreamMode);
                                 }
                                 classificationResult = poseClassifierProcessor.getPoseResult(pose);
+                                
                             }
                             return new PoseWithClassification(pose, classificationResult);
                        
@@ -139,6 +140,7 @@ public class PoseDetectorProcessor
                                           //  new PoseClassifierProcessor(context, isStreamMode);
                                 }
                                 classificationResult = poseClassifierProcessor.getPoseResult(pose);
+                                
                             }
                             return new PoseWithClassification(pose, classificationResult);
                         });

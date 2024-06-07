@@ -89,6 +89,7 @@ public class PoseGraphic extends Graphic {
       return;
     }
 
+        /*
     // Draw pose classification text.
     float classificationX = POSE_CLASSIFICATION_TEXT_SIZE * 0.5f;
     for (int i = 0; i < poseClassification.size(); i++) {
@@ -97,7 +98,18 @@ public class PoseGraphic extends Graphic {
               - POSE_CLASSIFICATION_TEXT_SIZE * 1.5f * (poseClassification.size() - i));
       canvas.drawText(
           poseClassification.get(i), classificationX, classificationY, classificationTextPaint);
-    }
+    }*/
+        
+        // Draw pose classification text.
+        classificationTextPaint.setTextAlign(Paint.Align.CENTER);
+        float classificationX = canvas.getWidth() / 2.0f;  // Center horizontally
+        float textHeight = POSE_CLASSIFICATION_TEXT_SIZE * 1.5f;
+        for (int i = 0; i < poseClassification.size(); i++) {
+        float classificationY = POSE_CLASSIFICATION_TEXT_SIZE * 1.5f * (i + 1);  // Calculate Y from the top
+        canvas.drawText(
+            poseClassification.get(i), classificationX, classificationY, classificationTextPaint);
+        }
+
 
     // Draw all the points
     for (PoseLandmark landmark : landmarks) {
