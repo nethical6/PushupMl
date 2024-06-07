@@ -1,67 +1,22 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/build.gradle",
-      "selection": {
-        "end": {
-          "column": 23,
-          "index": 1146,
-          "line": 50
-        },
-        "start": {
-          "column": 8,
-          "index": 1131,
-          "line": 50
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/AndroidManifest.xml",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 395,
-          "line": 9
-        },
-        "start": {
-          "column": 0,
-          "index": 395,
-          "line": 9
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/res/layout/activity_main.xml",
-      "selection": {
-        "end": {
-          "column": 20,
-          "index": 386,
-          "line": 10
-        },
-        "start": {
-          "column": 20,
-          "index": 386,
-          "line": 10
-        }
-      }
-    },
-    {
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/MainActivity.java",
       "selection": {
         "end": {
-          "column": 75,
-          "index": 2540,
-          "line": 67
+          "column": 8,
+          "index": 2639,
+          "line": 74
         },
         "start": {
-          "column": 75,
-          "index": 2540,
-          "line": 67
+          "column": 8,
+          "index": 2639,
+          "line": 74
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/build.gradle",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/PoseDetectorProcessor.java",
       "selection": {
         "end": {
           "column": 0,
@@ -76,32 +31,32 @@
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/settings.gradle",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/GraphicOverlay.java",
       "selection": {
         "end": {
-          "column": 18,
-          "index": 92,
-          "line": 4
+          "column": 5,
+          "index": 4398,
+          "line": 104
         },
         "start": {
-          "column": 18,
-          "index": 92,
-          "line": 4
+          "column": 5,
+          "index": 4398,
+          "line": 104
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/OverlayView.java",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/PoseGraphic.java",
       "selection": {
         "end": {
-          "column": 0,
-          "index": 2478,
-          "line": 66
+          "column": 63,
+          "index": 1335,
+          "line": 36
         },
         "start": {
-          "column": 0,
-          "index": 2478,
-          "line": 66
+          "column": 63,
+          "index": 1335,
+          "line": 36
         }
       }
     }
