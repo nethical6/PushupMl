@@ -74,7 +74,37 @@
           "line": 0
         }
       }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/.gitignore",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 7,
+          "line": 1
+        },
+        "start": {
+          "column": 0,
+          "index": 7,
+          "line": 1
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/.gitignore",
+      "selection": {
+        "end": {
+          "column": 12,
+          "index": 298,
+          "line": 20
+        },
+        "start": {
+          "column": 12,
+          "index": 298,
+          "line": 20
+        }
+      }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/.gitignore"
 }
