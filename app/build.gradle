@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'nethical.pushup'
+    namespace 'nethical.workout'
     compileSdk 33
     
     defaultConfig {
-        applicationId "nethical.pushup"
+        applicationId "nethical.workout"
         minSdk 21
         targetSdk 33
         versionCode 1
