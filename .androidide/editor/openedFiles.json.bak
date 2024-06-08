@@ -1,0 +1,20 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifierProcessor.java",
+      "selection": {
+        "end": {
+          "column": 14,
+          "index": 2625,
+          "line": 74
+        },
+        "start": {
+          "column": 14,
+          "index": 2625,
+          "line": 74
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifierProcessor.java"
+}

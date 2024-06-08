@@ -1,52 +1,37 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/build.gradle",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifierProcessor.java",
       "selection": {
         "end": {
-          "column": 39,
-          "index": 177,
-          "line": 11
+          "column": 4,
+          "index": 3007,
+          "line": 87
         },
         "start": {
-          "column": 39,
-          "index": 177,
-          "line": 11
+          "column": 4,
+          "index": 3007,
+          "line": 87
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/EMASmoothing.java",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
         }
       }
     },
     {
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java",
-      "selection": {
-        "end": {
-          "column": 25,
-          "index": 1073,
-          "line": 29
-        },
-        "start": {
-          "column": 13,
-          "index": 1061,
-          "line": 29
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/utils/PreferenceUtils.java",
-      "selection": {
-        "end": {
-          "column": 23,
-          "index": 1260,
-          "line": 31
-        },
-        "start": {
-          "column": 23,
-          "index": 1260,
-          "line": 31
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/utils/CameraXViewModel.java",
       "selection": {
         "end": {
           "column": 0,
@@ -61,5 +46,5 @@
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/utils/CameraXViewModel.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/EMASmoothing.java"
 }

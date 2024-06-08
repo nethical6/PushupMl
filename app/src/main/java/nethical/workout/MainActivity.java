@@ -1,6 +1,8 @@
 package nethical.workout;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 
@@ -20,7 +22,7 @@ import com.google.mlkit.vision.demo.GraphicOverlay;
 import com.google.mlkit.vision.demo.java.posedetector.PoseDetectorProcessor;
 import com.google.mlkit.vision.demo.java.posedetector.classification.PoseClassifierProcessor;
 
-import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
+import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean needUpdateGraphicOverlayImageSourceInfo = true;
 
     private int lensFacing;
-
+    private ProcessCameraProvider cameraProvider;
+    
+    private Handler uiHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
         cameraExecutor = Executors.newSingleThreadExecutor();
         executor = Executors.newSingleThreadExecutor();
 
+        startButton.setEnabled(false);
         
-        PoseDetectorOptions options =
-                new PoseDetectorOptions.Builder()
-                        .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
-                        .build();
+        uiHandler = new Handler(Looper.getMainLooper());
+
 
         //     PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(),true);
 
         startCamera();
+        loadCsvData();
 
+        /*
         ExecutorService executor2 = Executors.newSingleThreadExecutor();
 
         // Submit the task to the executor
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                                 new PoseDetectorProcessor(
                                         this, options, false, false, false, true, true, pcf);
                         startButton.setText("Start");
+                        startButton.setEnabled(true);
                        
                         //startCamera();
                     } catch (InterruptedException | ExecutionException e) {
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Execute onCompletion in a separate thread to avoid blocking the main thread
         executor2.submit(onCompletion);
-        
+        */
         startButton.setOnClickListener((v)->{
             if(startButton.isEnabled()){
                 startCamera();
@@ -125,12 +131,14 @@ public class MainActivity extends AppCompatActivity {
                                         .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                                         .build();
 
+                        cameraProvider.unbindAll();
                         if (imageProcessor == null) {
+                            
                             cameraProvider.bindToLifecycle(this, cameraSelector, preview);
 
                             return;
                         }
-                        cameraProvider.unbindAll();
+                        
 
                         ImageAnalysis imageAnalysis =
                                 new ImageAnalysis.Builder()
@@ -191,12 +199,42 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getMainExecutor(this));
     }
 
+    private void loadCsvData() {
+        // Create a new thread
+        AccuratePoseDetectorOptions options =
+                new AccuratePoseDetectorOptions.Builder()
+                        .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
+                        .build();
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Perform the background task
+                PoseClassifierProcessor pcf = new PoseClassifierProcessor(getApplication(), true, new String[] {PoseClassifierProcessor.PUSHUPS_CLASS});
+                // Update the UI on the main thread
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageProcessor =
+                                new PoseDetectorProcessor(
+                                        getApplicationContext(), options, false, false, false, true, true, pcf);
+                        startButton.setText("Start");
+                        startButton.setEnabled(true);
+                    }
+                });
+            }
+        }).start();
+    }
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        cameraExecutor.shutdown();
-
-        executor.shutdown();
+        if(imageProcessor!=null){
+           imageProcessor.stop();
+        }
+    //    cameraProvider.shutdown();
+        
     }
 
     
