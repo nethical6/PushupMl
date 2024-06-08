@@ -37,13 +37,13 @@ import nethical.pushup.ExerciseConstants;
  */
 public class PoseClassifierProcessor {
   private static final String TAG = "PoseClassifierProcessor";
-  private static final String POSE_SAMPLES_FILE = "pose/squat_samples.csv";
+  private static String POSE_SAMPLES_FILE = "pose/workout_squats_down.csv";
 
   // Specify classes for which we want rep counting.
   // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
   // for your pose samples.
-  private static final String PUSHUPS_CLASS = "pushups_down";
-  private static final String SQUATS_CLASS = "squats_down";
+  public static final String PUSHUPS_CLASS = "pushups_down";
+  public static final String SQUATS_CLASS = "squats_down";
   private static String[] POSE_CLASSES = {
     SQUATS_CLASS
   };
@@ -64,6 +64,7 @@ public class PoseClassifierProcessor {
       repCounters = new ArrayList<>();
       lastRepResult = "";
        POSE_CLASSES = poseClasses;     
+       POSE_SAMPLES_FILE  = "pose/workout_" + POSE_CLASSES[0] + ".csv";
     }
        
         

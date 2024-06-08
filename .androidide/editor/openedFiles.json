@@ -1,107 +1,47 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/MainActivity.java",
-      "selection": {
-        "end": {
-          "column": 4,
-          "index": 1589,
-          "line": 42
-        },
-        "start": {
-          "column": 4,
-          "index": 1589,
-          "line": 42
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/PoseGraphic.java",
-      "selection": {
-        "end": {
-          "column": 88,
-          "index": 3473,
-          "line": 97
-        },
-        "start": {
-          "column": 6,
-          "index": 3331,
-          "line": 95
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/utils/InferenceInfoGraphic.java",
-      "selection": {
-        "end": {
-          "column": 22,
-          "index": 2721,
-          "line": 79
-        },
-        "start": {
-          "column": 22,
-          "index": 2721,
-          "line": 79
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifier.java",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        },
-        "start": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        }
-      }
-    },
-    {
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/classification/PoseClassifierProcessor.java",
       "selection": {
         "end": {
-          "column": 70,
-          "index": 2548,
-          "line": 72
+          "column": 8,
+          "index": 1693,
+          "line": 45
         },
         "start": {
-          "column": 70,
-          "index": 2548,
-          "line": 72
+          "column": 8,
+          "index": 1693,
+          "line": 45
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/ExerciseConstants.java",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/pushup/MainActivity.java",
       "selection": {
         "end": {
-          "column": 46,
-          "index": 152,
-          "line": 4
+          "column": 137,
+          "index": 2543,
+          "line": 70
         },
         "start": {
-          "column": 46,
-          "index": 152,
-          "line": 4
+          "column": 137,
+          "index": 2543,
+          "line": 70
         }
       }
     },
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/res/layout/activity_main.xml",
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/AndroidManifest.xml",
       "selection": {
         "end": {
-          "column": 4,
-          "index": 595,
-          "line": 16
+          "column": 21,
+          "index": 21,
+          "line": 0
         },
         "start": {
-          "column": 4,
-          "index": 595,
-          "line": 16
+          "column": 21,
+          "index": 21,
+          "line": 0
         }
       }
     }

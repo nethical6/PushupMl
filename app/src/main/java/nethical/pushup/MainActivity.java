@@ -1,13 +1,8 @@
 package nethical.pushup;
 
-import android.content.Context;
-import android.graphics.Camera;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -21,16 +16,11 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.demo.GraphicOverlay;
 import com.google.mlkit.vision.demo.java.posedetector.PoseDetectorProcessor;
 import com.google.mlkit.vision.demo.java.posedetector.classification.PoseClassifierProcessor;
-import com.google.mlkit.vision.pose.PoseDetection;
-import com.google.mlkit.vision.pose.PoseDetector;
-import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PreviewView previewView;
     private GraphicOverlay graphicOverlay;
-    
+    private Button startButton;
 
     private ExecutorService cameraExecutor;
     private ExecutorService executor;
@@ -58,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         graphicOverlay = findViewById(R.id.overlayView);
+        startButton = findViewById(R.id.start_button_workout);
         
         cameraExecutor = Executors.newSingleThreadExecutor();
         executor = Executors.newSingleThreadExecutor();
 
+        
         PoseDetectorOptions options =
                 new PoseDetectorOptions.Builder()
                         .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
@@ -77,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         Future<PoseClassifierProcessor> future =
                 executor2.submit(
                         () -> {
-                            return new PoseClassifierProcessor(getApplication(), true);
+                            return new PoseClassifierProcessor(getApplication(), true, new String[] {PoseClassifierProcessor.PUSHUPS_CLASS});
                         });
 
         // Define a callback function to be executed when the task completes
@@ -89,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         imageProcessor =
                                 new PoseDetectorProcessor(
                                         this, options, false, false, false, true, true, pcf);
-                        startCamera();
+                        startButton.setText("Start");
+                       
+                        //startCamera();
                     } catch (InterruptedException | ExecutionException e) {
                         // Handle any exceptions that occurred during the task execution
                         e.printStackTrace();
@@ -100,6 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Execute onCompletion in a separate thread to avoid blocking the main thread
         executor2.submit(onCompletion);
+        
+        startButton.setOnClickListener((v)->{
+            if(startButton.isEnabled()){
+                startCamera();
+                 startButton.setText("Stop Quest");
+            } else{
+                Toast.makeText(this,"Please wait while the AI loads",Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        
     }
 
     private void startCamera() {
