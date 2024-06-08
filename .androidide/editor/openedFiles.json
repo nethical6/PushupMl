@@ -4,14 +4,14 @@
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java",
       "selection": {
         "end": {
-          "column": 82,
-          "index": 8166,
-          "line": 181
+          "column": 20,
+          "index": 4217,
+          "line": 117
         },
         "start": {
-          "column": 82,
-          "index": 8166,
-          "line": 181
+          "column": 20,
+          "index": 4217,
+          "line": 117
         }
       }
     },
@@ -104,7 +104,37 @@
           "line": 20
         }
       }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/res/drawable-hdpi/ic_switch_camera_white_48dp.xml",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/res/layout/activity_main.xml",
+      "selection": {
+        "end": {
+          "column": 29,
+          "index": 1140,
+          "line": 31
+        },
+        "start": {
+          "column": 29,
+          "index": 1140,
+          "line": 31
+        }
+      }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/.gitignore"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java"
 }

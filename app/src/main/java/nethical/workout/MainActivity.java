@@ -6,9 +6,11 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraInfoUnavailableException;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
@@ -42,11 +44,12 @@ public class MainActivity extends AppCompatActivity
 
     private boolean needUpdateGraphicOverlayImageSourceInfo = true;
 
-    private int lensFacing;
+    private int lensFacing = CameraSelector.LENS_FACING_FRONT;
     private ProcessCameraProvider cameraProvider;
 
     private Handler uiHandler;
 
+    private CameraSelector cameraSelector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,12 @@ public class MainActivity extends AppCompatActivity
         cameraExecutor = Executors.newSingleThreadExecutor();
         executor = Executors.newSingleThreadExecutor();
 
+        ImageView switchCamera = findViewById(R.id.switch_camera);
+        switchCamera.setOnClickListener((v)->{
+            switchCameraLens();
+        });
+        
+        
         startButton.setEnabled(false);
 
         uiHandler = new Handler(Looper.getMainLooper());
@@ -85,24 +94,28 @@ public class MainActivity extends AppCompatActivity
         cameraProviderFuture.addListener(
                 () -> {
                     try {
-                        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
+                        if(cameraProvider==null){
+                            cameraProvider = cameraProviderFuture.get();
+                        }
+                        
                         Preview preview = new Preview.Builder().build();
                         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-                        CameraSelector cameraSelector =
+                        if(cameraSelector==null){
+                           cameraSelector =
                                 new CameraSelector.Builder()
-                                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                                        .requireLensFacing(lensFacing)
                                         .build();
-
+                        }
+                        
                         cameraProvider.unbindAll();
                         if (imageProcessor == null) {
-
                             cameraProvider.bindToLifecycle(this, cameraSelector, preview);
 
                             return;
                         }
 
+                    
                         ImageAnalysis imageAnalysis =
                                 new ImageAnalysis.Builder()
                                         .setBackpressureStrategy(
@@ -212,6 +225,35 @@ public class MainActivity extends AppCompatActivity
                 .start();
     }
 
+    private void switchCameraLens(){
+    if (cameraProvider == null) {
+      return;
+    }
+    int newLensFacing =
+        lensFacing == CameraSelector.LENS_FACING_FRONT
+            ? CameraSelector.LENS_FACING_BACK
+            : CameraSelector.LENS_FACING_FRONT;
+    CameraSelector newCameraSelector =
+        new CameraSelector.Builder().requireLensFacing(newLensFacing).build();
+    try {
+      if (cameraProvider.hasCamera(newCameraSelector)) {
+        lensFacing = newLensFacing;
+        cameraSelector = newCameraSelector;
+         startCamera();       
+                         
+        return;
+      }
+    } catch (CameraInfoUnavailableException e) {
+      // Falls through
+    }
+    Toast.makeText(
+            getApplicationContext(),
+            "This device does not have lens with facing: " + newLensFacing,
+            Toast.LENGTH_SHORT)
+        .show();
+    }
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
