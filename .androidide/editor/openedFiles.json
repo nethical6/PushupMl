@@ -1,37 +1,67 @@
 {
   "allFiles": [
     {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifierProcessor.java",
-      "selection": {
-        "end": {
-          "column": 4,
-          "index": 3007,
-          "line": 87
-        },
-        "start": {
-          "column": 4,
-          "index": 3007,
-          "line": 87
-        }
-      }
-    },
-    {
-      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/EMASmoothing.java",
-      "selection": {
-        "end": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        },
-        "start": {
-          "column": 0,
-          "index": 0,
-          "line": 0
-        }
-      }
-    },
-    {
       "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java",
+      "selection": {
+        "end": {
+          "column": 82,
+          "index": 8166,
+          "line": 181
+        },
+        "start": {
+          "column": 82,
+          "index": 8166,
+          "line": 181
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/PoseDetectorProcessor.java",
+      "selection": {
+        "end": {
+          "column": 67,
+          "index": 7856,
+          "line": 196
+        },
+        "start": {
+          "column": 67,
+          "index": 7856,
+          "line": 196
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/utils/PoseGraphic.java",
+      "selection": {
+        "end": {
+          "column": 9,
+          "index": 3719,
+          "line": 100
+        },
+        "start": {
+          "column": 6,
+          "index": 3421,
+          "line": 96
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifier.java",
+      "selection": {
+        "end": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        },
+        "start": {
+          "column": 0,
+          "index": 0,
+          "line": 0
+        }
+      }
+    },
+    {
+      "file": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/PoseClassifierProcessor.java",
       "selection": {
         "end": {
           "column": 0,
@@ -46,5 +76,5 @@
       }
     }
   ],
-  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/classification/EMASmoothing.java"
+  "selectedFile": "/storage/emulated/0/AndroidIDEProjects/Pushup/app/src/main/java/nethical/workout/MainActivity.java"
 }

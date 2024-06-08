@@ -55,6 +55,7 @@ public class PoseDetectorProcessor
     
     private PoseClassifierProcessor poseClassifierProcessor;
     
+    private PoseDetectorListener poseListener = null;
     /** Internal class to hold Pose and classification results. */
     protected static class PoseWithClassification {
         private final Pose pose;
@@ -82,6 +83,32 @@ public class PoseDetectorProcessor
             boolean rescaleZForVisualization,
             boolean runClassification,
             boolean isStreamMode,
+            PoseClassifierProcessor poseClassifierProcessor,
+            PoseDetectorListener poseListener
+        
+        ) {
+        super(context);
+        this.showInFrameLikelihood = showInFrameLikelihood;
+        this.visualizeZ = visualizeZ;
+        this.rescaleZForVisualization = rescaleZForVisualization;
+        detector = PoseDetection.getClient(options);
+        this.runClassification = runClassification;
+        this.isStreamMode = isStreamMode;
+        this.context = context;
+        this.poseClassifierProcessor = poseClassifierProcessor;
+        classificationExecutor = Executors.newSingleThreadExecutor();
+        resultExecutor = Executors.newSingleThreadExecutor();
+        this.poseListener = poseListener;
+    }
+    
+    public PoseDetectorProcessor(
+            Context context,
+            PoseDetectorOptionsBase options,
+            boolean showInFrameLikelihood,
+            boolean visualizeZ,
+            boolean rescaleZForVisualization,
+            boolean runClassification,
+            boolean isStreamMode,
             PoseClassifierProcessor poseClassifierProcessor
         
         ) {
@@ -97,6 +124,7 @@ public class PoseDetectorProcessor
         classificationExecutor = Executors.newSingleThreadExecutor();
         resultExecutor = Executors.newSingleThreadExecutor();
     }
+
 
     @Override
     public void stop() {
@@ -159,10 +187,13 @@ public class PoseDetectorProcessor
                         visualizeZ,
                         rescaleZForVisualization,
                         poseWithClassification.classificationResult));
+        poseListener.onNewRepOccured(poseWithClassification.classificationResult);
     }
 
     @Override
     protected void onFailure(Exception e) {}
     
-    
+    public interface PoseDetectorListener{
+        public void onNewRepOccured(List<String> poseClassification);
+    }
 }
